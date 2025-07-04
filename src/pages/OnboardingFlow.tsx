@@ -1,6 +1,13 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  SignedIn, 
+  SignedOut, 
+  SignInButton, 
+  SignUpButton, 
+  UserButton,
+  useUser 
+} from '@clerk/clerk-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import LoadingState from '@/components/LoadingState';
@@ -11,6 +18,7 @@ const OnboardingFlow = () => {
   const [username, setUsername] = useState('');
   const [vibeGoal, setVibeGoal] = useState('');
   const navigate = useNavigate();
+  const { user } = useUser();
 
   const vibeOptions = [
     { id: 'calm', label: '🧘 Calm', description: 'Peaceful and centered' },
@@ -157,6 +165,32 @@ const OnboardingFlow = () => {
         >
           {step === 3 ? 'Start My Journey' : 'Continue'}
         </Button>
+      </div>
+
+      <div className="mt-8">
+        <SignedIn>
+          <div className="text-center">
+            <p className="text-white/70 text-sm mb-2">
+              You are signed in as{' '}
+              <span className="font-semibold">{user?.email}</span>
+            </p>
+            <UserButton />
+          </div>
+        </SignedIn>
+        <SignedOut>
+          <div className="flex justify-center space-x-4">
+            <SignInButton>
+              <Button className="flex-1 h-12 bg-white/5 border-white/10 text-white rounded-2xl hover:bg-white/10 transition-all duration-300">
+                Sign In
+              </Button>
+            </SignInButton>
+            <SignUpButton>
+              <Button className="flex-1 h-12 bg-gradient-to-r from-rawrr-orange to-rawrr-orange-light text-white rounded-2xl hover:opacity-90 transition-all duration-300">
+                Sign Up
+              </Button>
+            </SignUpButton>
+          </div>
+        </SignedOut>
       </div>
     </div>
   );
