@@ -1,11 +1,12 @@
-
 import React, { useState } from 'react';
 import Navigation from '@/components/Navigation';
 import { Settings, LogOut, Music, Palette } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { UserButton, useUser } from '@clerk/clerk-react';
 
 const Profile = () => {
   const [spotifyConnected, setSpotifyConnected] = useState(true);
+  const { user } = useUser();
 
   const moodHistory = [
     { day: 'Mon', mood: 65 },
@@ -30,15 +31,41 @@ const Profile = () => {
         <div className="text-center mb-8 animate-fade-in">
           <div className="relative mb-4">
             <div className="w-24 h-24 bg-gradient-to-r from-rawrr-orange to-rawrr-orange-light rounded-full mx-auto flex items-center justify-center animate-glow-pulse">
-              <span className="text-3xl font-bold text-white">R</span>
+              {user?.imageUrl ? (
+                <img 
+                  src={user.imageUrl} 
+                  alt="Profile" 
+                  className="w-full h-full rounded-full object-cover"
+                />
+              ) : (
+                <span className="text-3xl font-bold text-white">
+                  {user?.firstName?.charAt(0) || user?.emailAddresses[0]?.emailAddress?.charAt(0) || 'R'}
+                </span>
+              )}
             </div>
             <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-rawrr-green rounded-full border-4 border-rawrr-dark flex items-center justify-center">
               <span className="text-xs">✨</span>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-white mb-1">@rawrrer_alex</h1>
+          <h1 className="text-2xl font-bold text-white mb-1">
+            {user?.fullName || user?.firstName || 'Rawrr User'}
+          </h1>
           <p className="text-rawrr-orange font-medium mb-2">🌗 Mostly Creative</p>
-          <p className="text-white/60 text-sm">Digital identity explorer since Dec 2024</p>
+          <p className="text-white/60 text-sm">
+            Digital identity explorer since {new Date(user?.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+          </p>
+          
+          {/* User Button for account management */}
+          <div className="mt-4 flex justify-center">
+            <UserButton 
+              appearance={{
+                elements: {
+                  avatarBox: "w-10 h-10",
+                  userButtonPopover: "bg-rawrr-dark border border-white/10"
+                }
+              }}
+            />
+          </div>
         </div>
 
         {/* Quick Stats */}
