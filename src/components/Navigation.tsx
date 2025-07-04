@@ -13,7 +13,8 @@ const Navigation = () => {
     { path: '/profile', icon: User, label: 'Profile' },
   ];
 
-  if (location.pathname === '/') return null;
+  // Hide navigation on sign-in page
+  if (location.pathname === '/' || location.pathname === '/signin') return null;
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 bg-rawrr-dark/80 backdrop-blur-xl border-t border-white/10">

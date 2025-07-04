@@ -48,10 +48,7 @@ const Profile = () => {
             </div>
           </div>
           <h1 className="text-2xl font-bold text-white mb-1">
-            {user?.firstName && user?.lastName 
-              ? `${user.firstName} ${user.lastName}`
-              : user?.username || user?.emailAddresses[0]?.emailAddress || 'Rawrr User'
-            }
+            {user?.fullName || user?.firstName || 'Rawrr User'}
           </h1>
           <p className="text-rawrr-orange font-medium mb-2">🌗 Mostly Creative</p>
           <p className="text-white/60 text-sm">
